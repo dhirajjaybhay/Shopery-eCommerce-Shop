@@ -1,0 +1,7 @@
+.hero1{
+    background: url(../../public/assets/img/apple-hero-image.jpg);
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
