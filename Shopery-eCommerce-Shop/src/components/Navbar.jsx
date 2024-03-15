@@ -1,12 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { CiShoppingCart } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
 import { useState } from "react";
 
-function Navbar() {
+function Navbar(props) {
   const [isOpen, setisOpen] = useState(false);
 
   const toggleChange = () => {
@@ -62,12 +62,19 @@ function Navbar() {
             )}
 
             <div className="flex gap-4">
-              <div>
-                <CiShoppingCart className="text-4xl" />
+              <div className="relative">
+                <div className="absolute right-3 top-[-12px]">
+                  <h1 className="text-red-500">
+                    {props.cart.length > 0 ? props.cart.length : ""}
+                  </h1>
+                </div>
+                <Link to="/cart">
+                  <CiShoppingCart className="text-4xl" />
+                </Link>
               </div>
               <div>
                 <button className="py-1 px-4 border-2 border-gray-100 rounded-md bg-red-500 text-white">
-                  <NavLink>Login</NavLink>
+                  <NavLink to="/signin">Login</NavLink>
                 </button>
               </div>
               <div className="md:hidden">

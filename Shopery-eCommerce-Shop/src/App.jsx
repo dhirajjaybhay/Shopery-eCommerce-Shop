@@ -1,28 +1,68 @@
-import { Routes, Route } from 'react-router-dom'
-import './App.css'
-import React from 'react'
-import Index from './layouts/Index'
-import Home from './layouts/Home'
-import AboutUS from './pages/AboutUS'
-import Shop from './pages/Shop'
-import ContactUS from './pages/ContactUS'
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import React, { useState } from "react";
+import Index from "./layouts/Index";
+import Home from "./layouts/Home";
+import AboutUS from "./pages/AboutUS";
+import Shop from "./pages/Shop";
+import ContactUS from "./pages/ContactUS";
+import Cart from "./pages/Cart";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import { Toaster } from "react-hot-toast";
 
 function App() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    const isProductExite = cart.find((findItem) => findItem.id === product.id);
+    if (isProductExite) {
+      const updateCart = cart.map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      setCart(updateCart);
+    } else {
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
+  };
+
+const decValue =(id) =>{
+  const decItemVal = cart.map((item) => item.id === id && item.quantity >1  ? { ...item, quantity : item.quantity - 1}: item )
+  setCart(decItemVal);
+}
+const incValue =(id) =>{
+  const decItemVal = cart.map((item) => item.id === id ? { ...item, quantity : item.quantity + 1}: item )
+  setCart(decItemVal);
+}
+
+const removeItem = (id) =>{
+  const updateRemoveItem = cart.filter((item) =>(item.id !== id))
+  setCart(updateRemoveItem);
+}
+
+const totalPrice = () =>{
+ const allPrice =  cart.reduce((total, cartPrice)=>{
+    return total + cartPrice.price * cartPrice.quantity
+  },0)
+  return  allPrice;
+}
 
   return (
     <>
       <Routes>
-       <Route path='/' element={<Index />}>
-        <Route index element={<Home />}/>
-        <Route path='/shop' element={<Shop />}/>
-        <Route path='/aboutus' element={<AboutUS />}/>
-        <Route path='/contactus' element={<ContactUS />}/>
-       </Route>
-
-
+        <Route path="/" element={<Index cart={cart}/>}>
+          <Route index element={<Home addToCart={addToCart}/>} />
+          <Route path="/shop" element={<Shop addToCart={addToCart}  />} />
+          <Route path="/aboutus" element={<AboutUS />} />
+          <Route path="/contactus" element={<ContactUS />} />
+          <Route path="/cart" element={<Cart cart={cart} incValue={incValue} decValue={decValue} removeItem={removeItem} totalPrice={totalPrice}/>} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
       </Routes>
+      <Toaster />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
