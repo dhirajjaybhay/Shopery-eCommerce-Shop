@@ -1,35 +1,44 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebaseAuth/FirebaseAut";
+import { auth } from "../firebaseAuth/Auth";
+import { updateProfile } from "firebase/auth";
 
 function SignUp() {
- const navigateTo =  useNavigate();
+  
+  const navigateTo = useNavigate();
 
- const [ userSignUp , setUserSignUp ] = useState({username:"", email: "", password: ""});
-const handleChange = (e) =>{
-    setUserSignUp({...userSignUp, [e.target.name]:e.target.value})
-//    console.log(userSignUp);
-}
+  const [userSignUp, setUserSignUp] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setUserSignUp({ ...userSignUp, [e.target.name]: e.target.value });
+    //    console.log(userSignUp);
+  };
 
-
-const handelSubmit = (e) =>{
- e.preventDefault();
- if(!userSignUp.username || !userSignUp.email || !userSignUp.password){
-    return toast.error("All fields are required")
- }else{
-createUserWithEmailAndPassword(auth, userSignUp.email, userSignUp.password)
-.then(async(res)=>{
-    const user = res.user;
-    await updateProfile(user,{displayName:userSignUp.username})
-});
-navigateTo('/signIn')
-.catch((error)=>{
-    toast.error(error.message)
-} )
- }
-}
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    if (!userSignUp.username || !userSignUp.email || !userSignUp.password) {
+      return toast.error("All fields are required");
+    } else {
+      createUserWithEmailAndPassword(
+        auth,
+        userSignUp.email,
+        userSignUp.password
+      )
+        .then(async (res) => {
+          const user = res.user;
+          await updateProfile(user, { displayName: userSignUp.username });
+          navigateTo("/signIn");
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    }
+  };
 
   return (
     <>
@@ -43,7 +52,7 @@ navigateTo('/signIn')
             alt="https://undraw.co/illustrations"
             title="https://undraw.co/illustrations"
             viewBox="0 0 524.67004 531.39694"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
           >
             <polygon
               points="117.67523 88.74385 113.67523 109.74385 133.61763 115.36589 131.1398 92.94604 117.67523 88.74385"
@@ -269,71 +278,70 @@ navigateTo('/signIn')
               Sign Up
             </h1>
 
-              <div>
-                <label
-                  for="username"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Username
-                </label>
-                <input
-                  onChange={handleChange}
-                  value={userSignUp.username}
-                  type="text"
-                  id="username"
-                  name="username"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              <div>
-                <label
-                  for="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
+              <input
+                onChange={handleChange}
+                value={userSignUp.username}
+                type="text"
+                id="username"
+                name="username"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
                 onChange={handleChange}
                 value={userSignUp.email}
-                  type="text"
-                  id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              <div>
-                <label
-                  for="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <input
-                  onChange={handleChange}
-                  value={userSignUp.password}
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              <div className="pt-6">
-                <button
+                type="text"
+                id="email"
+                name="email"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                onChange={handleChange}
+                value={userSignUp.password}
+                type="password"
+                id="password"
+                name="password"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+              />
+            </div>
+            <div className="pt-6">
+              <button
                 onClick={handelSubmit}
-                  type="submit"
-                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
-                >
-                  Sign Up
-                </button>
-              </div>
+                type="submit"
+                className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+              >
+                Sign Up
+              </button>
+            </div>
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>Already have an account? </p>
-    <Link to="/signin">
-
-              <p href="#" className="text-blue-800 hover:underline">
-                Login here
-              </p>
-    </Link>
+              <Link to="/signin">
+                <p href="#" className="text-blue-800 hover:underline">
+                  Login here
+                </p>
+              </Link>
             </div>
           </div>
         </div>

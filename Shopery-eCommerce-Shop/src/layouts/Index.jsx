@@ -7,7 +7,7 @@ function Index(props) {
   return (
     <>
       <div>
-        <Navbar cart={props.cart}/>
+        <Navbar cart={props.cart} userName={ props.userName} />
         <main className="max-w-screen-xl mx-auto px-4 xl:px-8">
           <Outlet />
         </main>

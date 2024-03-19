@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function Cart({ cart, decValue, incValue, removeItem, totalPrice }) {
   return (
     <>
-      <div className="container mx-auto mt-36 ">
+      <div className="container mx-auto mt-28 ">
+      <div className="shoppingCart">
+    <div className="flex gap-2 py-2 items-center">
+      <Link to='/'><p>Home</p></Link>
+      <p> <MdKeyboardDoubleArrowRight /> </p>
+      <Link to='/cart'><p>cart</p></Link>
+
+    </div>
+    <img src="../assets/img/shoppingCart1.jpg" className="h-[250px] w-full opacity-90 rounded-sm" alt="" />
+    </div>
         <div className="flex flex-col md:flex-row shadow-lg border border-gray-200 rounded-md my-10">
           <div className="w-full md:w-3/4 bg-white p-4 md:px-10 md:py-10">
             <div className="flex justify-between border-b pb-8">
@@ -35,7 +46,7 @@ function Cart({ cart, decValue, incValue, removeItem, totalPrice }) {
                 >
                   <div className="flex w-2/5">
                     <div className="w-20">
-                      <img className="h-24" src={item.images[0]} alt="" />
+                      <img className="h-24" src={item.thumbnail} alt="" />
                     </div>
                     <div className="flex flex-col justify-between ml-4 flex-grow">
                       <span className="font-bold text-sm">{item.title}</span>

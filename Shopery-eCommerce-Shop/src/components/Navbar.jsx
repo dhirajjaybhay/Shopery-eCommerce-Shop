@@ -8,6 +8,7 @@ import { useState } from "react";
 
 function Navbar(props) {
   const [isOpen, setisOpen] = useState(false);
+  console.log(props.username)
 
   const toggleChange = () => {
     setisOpen(!isOpen);
@@ -15,7 +16,7 @@ function Navbar(props) {
 
   return (
     <>
-      <div className="fixed top-3 w-full bg-gray-50 p-4 ">
+      <div className="fixed top-3 w-full bg-gray-50 p-4 z-50">
         <nav>
           <div className="flex justify-between relative">
             <div>
@@ -73,6 +74,7 @@ function Navbar(props) {
                 </Link>
               </div>
               <div>
+                <span>{props.userName}</span>
                 <button className="py-1 px-4 border-2 border-gray-100 rounded-md bg-red-500 text-white">
                   <NavLink to="/signin">Login</NavLink>
                 </button>

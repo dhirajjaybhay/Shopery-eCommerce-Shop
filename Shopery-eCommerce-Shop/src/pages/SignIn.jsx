@@ -1,7 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebaseAuth/Auth";
+import {  signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+
 
 function SignIn() {
+  const navigateTo = useNavigate();
+
+  const [userSignUp, setUserSignUp] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setUserSignUp({ ...userSignUp, [e.target.name]: e.target.value });
+  };
+
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    if ( !userSignUp.email || !userSignUp.password) {
+      return toast.error("All fields are required");
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        userSignUp.email,
+        userSignUp.password
+      )
+        .then(async (res) => {
+          navigateTo("/");
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    }
+  };
+
   return (
     <>
       <div className="flex md:justify-between justify-center gap-4 mt-36 mb-20">
@@ -14,7 +48,7 @@ function SignIn() {
             alt="https://undraw.co/illustrations"
             title="https://undraw.co/illustrations"
             viewBox="0 0 524.67004 531.39694"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
           >
             <polygon
               points="117.67523 88.74385 113.67523 109.74385 133.61763 115.36589 131.1398 92.94604 117.67523 88.74385"
@@ -240,51 +274,51 @@ function SignIn() {
               Sign In
             </h1>
 
-            <form action="" className="space-y-4">
-              <div>
-                <label
-                  for="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              <div>
-                <label
-                  for="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
-                >
-                  Sign In
-                </button>
-              </div>
-            </form>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                onChange={handleChange}
+                value={userSignUp.email}
+                type="text"
+                id="email"
+                name="email"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                onChange={handleChange}
+                value={userSignUp.password}
+                type="password"
+                id="password"
+                name="password"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+              />
+            </div>
+            <div className="pt-6">
+              <button
+                 onClick={handelSubmit}
+                type="submit"
+                className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+              >
+                Sign In
+              </button>
+            </div>
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>Don't have an account? </p>
-              <Link to='/signup'>
-                
-              <p className="text-blue-800 hover:underline">
-                Create here
-              </p>
+              <Link to="/signup">
+                <p className="text-blue-800 hover:underline">Create here</p>
               </Link>
             </div>
           </div>
